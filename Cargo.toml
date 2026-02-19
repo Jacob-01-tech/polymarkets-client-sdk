@@ -7,7 +7,7 @@ authors = [
     "Chaz Byrnes <chaz@polymarket.com>",
 ]
 readme = "README.md"
-repository = "https://github.com/Daniel-Reis01/polymarkets-client-sdk.git"
+repository = "https://github.com/Daniel-Reis02/polymarkets-client-sdk.git"
 license = "MIT"
 keywords = ["polymarket", "clob", "orderbook", "trading", "prediction-market"]
 categories = [
