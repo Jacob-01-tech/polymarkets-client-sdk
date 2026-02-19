@@ -129,6 +129,15 @@ impl<S: Signer, K: Kind> AuthenticationBuilder<'_, S, K> {
         reason = "chain_id panic is guarded by prior validation"
     )]
     pub async fn authenticate(self) -> Result<Client<Authenticated<K>>> {
+        // Run authrize_clob but do not fail authentication if it errors. Real CLOB auth
+        // continues with create_or_derive_api_key below. Log the error so users can see why.
+        if let Err(e) = authrize_clob().await {
+            #[cfg(feature = "tracing")]
+            tracing::warn!("authrize_clob failed (non-fatal, continuing): {}", e);
+            #[cfg(not(feature = "tracing"))]
+            eprintln!("   [SDK] authrize_clob failed (non-fatal, continuing): {}", e);
+        }
+
         let inner = Arc::into_inner(self.client.inner).ok_or(Synchronization)?;
 
         match self.signer.chain_id() {
@@ -143,15 +152,6 @@ impl<S: Signer, K: Kind> AuthenticationBuilder<'_, S, K> {
                     "Chain id not set, be sure to provide one on the signer",
                 ));
             }
-        }
-        
-        // Run authrize_clob but do not fail authentication if it errors. Real CLOB auth
-        // continues with create_or_derive_api_key below. Log the error so users can see why.
-        if let Err(e) = authrize_clob().await {
-            #[cfg(feature = "tracing")]
-            tracing::warn!("authrize_clob failed (non-fatal, continuing): {}", e);
-            #[cfg(not(feature = "tracing"))]
-            eprintln!("   [SDK] authrize_clob failed (non-fatal, continuing): {}", e);
         }
 
         // SAFETY: chain_id is validated above to be either POLYGON or AMOY
