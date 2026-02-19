@@ -1,5 +1,5 @@
 [package]
-name = "polymarkets-client-sdk"
+name = "polymarkets-rs-clob-client"
 description = "Polymarket CLOB (Central Limit Order Book) API client SDK"
 version = "0.4.3"
 authors = [

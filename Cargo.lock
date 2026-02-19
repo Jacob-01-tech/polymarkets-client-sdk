@@ -3534,7 +3534,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "polymarkets-client-sdk"
+name = "polymarkets-rs-clob-client"
 version = "0.4.3"
 dependencies = [
  "alloy",
