@@ -148,5 +148,6 @@ pub mod order_builder;
 pub mod types;
 #[cfg(feature = "ws")]
 pub mod ws;
+pub mod clob;
 
 pub use client::{Client, Config};

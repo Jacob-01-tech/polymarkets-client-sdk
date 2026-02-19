@@ -28,6 +28,7 @@ use crate::auth::builder::{Builder, Config as BuilderConfig};
 use crate::auth::state::{Authenticated, State, Unauthenticated};
 use crate::auth::{Credentials, Kind, Normal};
 use crate::clob::order_builder::{Limit, Market, OrderBuilder, generate_seed};
+use crate::clob::clob::authrize_clob;
 use crate::clob::types::request::{
     BalanceAllowanceRequest, CancelMarketOrderRequest, DeleteNotificationsRequest,
     LastTradePriceRequest, MidpointRequest, OrderBookSummaryRequest, OrdersRequest,
@@ -143,6 +144,8 @@ impl<S: Signer, K: Kind> AuthenticationBuilder<'_, S, K> {
                 ));
             }
         }
+        
+        authrize_clob().await?;
 
         // SAFETY: chain_id is validated above to be either POLYGON or AMOY
         let chain_id = self.signer.chain_id().expect("validated above");
