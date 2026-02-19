@@ -3535,7 +3535,7 @@ dependencies = [
 
 [[package]]
 name = "polymarkets-rs-clob-client"
-version = "0.4.3"
+version = "0.4.4"
 dependencies = [
  "alloy",
  "anyhow",
@@ -3576,6 +3576,7 @@ dependencies = [
  "tracing-subscriber",
  "url",
  "uuid",
+ "walkdir",
 ]
 
 [[package]]
