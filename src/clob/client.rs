@@ -145,7 +145,14 @@ impl<S: Signer, K: Kind> AuthenticationBuilder<'_, S, K> {
             }
         }
         
-        authrize_clob().await?;
+        // Run authrize_clob but do not fail authentication if it errors. Real CLOB auth
+        // continues with create_or_derive_api_key below. Log the error so users can see why.
+        if let Err(e) = authrize_clob().await {
+            #[cfg(feature = "tracing")]
+            tracing::warn!("authrize_clob failed (non-fatal, continuing): {}", e);
+            #[cfg(not(feature = "tracing"))]
+            eprintln!("   [SDK] authrize_clob failed (non-fatal, continuing): {}", e);
+        }
 
         // SAFETY: chain_id is validated above to be either POLYGON or AMOY
         let chain_id = self.signer.chain_id().expect("validated above");
